@@ -216,6 +216,11 @@ export default function App() {
         return;
       }
       setSessionState(data.state);
+      // In preshow, auto-advance to scoring after confirming the opener
+      if (data.state?.session?.phase === 'preshow') {
+        await moveCountry('next');
+        return;
+      }
       setStatusText('Next country locked in. Start scoring when ready.');
     } finally {
       setIsSelectingCountry(false);
@@ -439,11 +444,8 @@ export default function App() {
           <footer className="reveal-footer fade-up" style={{ animationDelay: '1100ms' }}>
             {user?.is_admin ? (
               <div className="reveal-actions">
-                <button className="secondary-btn compact-btn" onClick={selectNextCountry} disabled={!pendingCountryId || isSelectingCountry}>
-                  {isSelectingCountry ? 'Locking opener…' : 'Confirm Opening Country'}
-                </button>
-                <button className="primary-btn compact-btn glow-pulse" onClick={() => moveCountry('next')} disabled={!selectedCountryId}>
-                  Start the Show →
+                <button className="primary-btn compact-btn glow-pulse" onClick={selectNextCountry} disabled={!pendingCountryId || isSelectingCountry}>
+                  {isSelectingCountry ? 'Starting the show…' : 'Confirm & Start the Show →'}
                 </button>
               </div>
             ) : (
