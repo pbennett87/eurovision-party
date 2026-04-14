@@ -516,15 +516,6 @@ export default function App() {
           </div>
 
           <div className="reveal-stats fade-up" style={{ animationDelay: '600ms' }}>
-            <div className="stat-orb main-stat">
-              <span>Total Points</span>
-              <strong>{resultsView.countryTotal}</strong>
-            </div>
-            <div className="stat-orb">
-              <span>Ranking</span>
-              <strong>#{resultsView.leaderboardPosition}</strong>
-              <small>of {resultsView.totalCountriesRanked}</small>
-            </div>
             <div className="stat-orb">
               <span>Voters</span>
               <strong>{resultsView.submittedBy}</strong>
@@ -933,7 +924,6 @@ export default function App() {
             <small>{me?.is_admin ? 'Leader' : 'Player'}</small>
           </div>
           <button className="icon-btn" onClick={requestFullscreen}>⛶ Fullscreen</button>
-          <button className="icon-btn" onClick={() => setShowLeaderboard(true)}>🏆 Board</button>
           {user?.is_admin && <button className="icon-btn" onClick={() => setShowAdmin(true)}>⚙ Admin</button>}
         </div>
       </header>
