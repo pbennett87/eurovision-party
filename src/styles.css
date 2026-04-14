@@ -1364,6 +1364,46 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   animation: scoringSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
+/* ────────── SUBMITTED CONFIRMATION ────────── */
+.submitted-confirmation {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 24px;
+  min-height: 320px;
+}
+
+.submitted-icon {
+  font-size: 3.5rem;
+  margin-bottom: 16px;
+}
+
+.submitted-confirmation h2 {
+  font-size: 1.6rem;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.submitted-confirmation p {
+  margin-bottom: 8px;
+}
+
+.all-submitted-banner {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 16px;
+  padding: 12px 20px;
+  border-radius: 16px;
+  background: linear-gradient(135deg, rgba(34, 211, 238, 0.12), rgba(139, 92, 246, 0.12));
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  color: #67e8f9;
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
 /* ────────── WINNER CELEBRATION (FINALE POSITION) ────────── */
 .winner-celebration-finale {
   margin: 48px auto 40px;

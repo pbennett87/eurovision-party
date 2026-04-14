@@ -36,7 +36,9 @@ export default function App() {
   const [revealedVoteCount, setRevealedVoteCount] = useState(0);
   const [finalRevealStage, setFinalRevealStage] = useState(0);
   const [finalCountryRevealCount, setFinalCountryRevealCount] = useState(0);
+  const [hasSubmitted, setHasSubmitted] = useState(false);
   const revealScrollRef = useRef<HTMLDivElement>(null);
+  const prevAllSubmittedRef = useRef(false);
 
   const focusRevealRow = useCallback((node: HTMLDivElement | null) => {
     if (!node) return;
@@ -104,6 +106,8 @@ export default function App() {
     if (sessionState?.session?.phase === 'scoring') {
       setScores(Object.fromEntries(categories.map((c) => [c, 3])));
       setStatusText('');
+      setHasSubmitted(false);
+      prevAllSubmittedRef.current = false;
     }
   }, [sessionState?.session?.current_country_index]);
 
@@ -179,6 +183,7 @@ export default function App() {
         return;
       }
       setSessionState(data.state);
+      setHasSubmitted(true);
       setStatusText(`Scores locked in — ${data.totalScore} points!`);
     } finally {
       setIsSubmitting(false);
@@ -265,6 +270,41 @@ export default function App() {
   const me = users.find((u: any) => u.id === user?.id) || user;
   const currentIndex = sessionState?.session?.current_country_index ?? 0;
   const selectedCountryId = sessionState?.session?.selected_country_id ?? null;
+  const currentCountryLeaderboardEntry = currentCountry ? leaderboard.find((c: any) => c.id === currentCountry.id) : null;
+  const allSubmitted = phase === 'scoring' && users.length > 0 && currentCountryLeaderboardEntry ? currentCountryLeaderboardEntry.submittedBy >= users.length : false;
+
+  // Play sound when all players have submitted
+  useEffect(() => {
+    if (allSubmitted && !prevAllSubmittedRef.current) {
+      prevAllSubmittedRef.current = true;
+      try {
+        const AudioCtx = window.AudioContext || (window as any).webkitAudioContext;
+        if (AudioCtx) {
+          const ctx = new AudioCtx();
+          const gain = ctx.createGain();
+          gain.connect(ctx.destination);
+          gain.gain.setValueAtTime(0.0001, ctx.currentTime);
+          gain.gain.exponentialRampToValueAtTime(0.08, ctx.currentTime + 0.02);
+          gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.0);
+
+          const notes = [523.25, 659.25, 783.99, 1046.50];
+          notes.forEach((freq, index) => {
+            const osc = ctx.createOscillator();
+            osc.type = index === 3 ? 'triangle' : 'sine';
+            osc.frequency.setValueAtTime(freq, ctx.currentTime + index * 0.12);
+            osc.connect(gain);
+            osc.start(ctx.currentTime + index * 0.12);
+            osc.stop(ctx.currentTime + index * 0.12 + 0.3);
+          });
+
+          window.setTimeout(() => ctx.close().catch(() => undefined), 1200);
+        }
+      } catch {}
+    }
+    if (!allSubmitted) {
+      prevAllSubmittedRef.current = false;
+    }
+  }, [allSubmitted]);
   const manualSelectionCountry = countries.find((country: any) => country.id === (pendingCountryId ?? selectedCountryId)) || null;
   const alreadyScoredCountryIds = new Set(leaderboard.filter((country: any) => country.submittedBy > 0).map((country: any) => country.id));
   const upcomingCountries = countries.filter((country: any) => !alreadyScoredCountryIds.has(country.id) && country.id !== resultsView?.country?.id);
@@ -924,6 +964,21 @@ export default function App() {
       <main className="app-content">
         <div className="screen-grid">
           <section className="hero-panel scoring-panel scoring-enter">
+            {hasSubmitted ? (
+              <div className="submitted-confirmation fade-up">
+                <div className="submitted-icon pop-in">✅</div>
+                <h2>Scores Submitted!</h2>
+                <p className="muted">Your score of <strong>{total}</strong> points has been locked in.</p>
+                {allSubmitted ? (
+                  <div className="all-submitted-banner fade-up" style={{ animationDelay: '200ms' }}>
+                    <span>🎉</span> Everyone has voted — waiting for results
+                  </div>
+                ) : (
+                  <p className="muted">Waiting for other players to finish voting…</p>
+                )}
+              </div>
+            ) : (
+            <>
             <div className="panel-header-row">
               <div className="fade-up" style={{ animationDelay: '80ms' }}>
                 <div className="section-tag">Scorecard</div>
@@ -958,6 +1013,8 @@ export default function App() {
                 </div>
               ))}
             </div>
+            </>
+            )}
           </section>
 
           <aside className="side-stack">
@@ -1006,9 +1063,11 @@ export default function App() {
               Lock &amp; Show Results
             </button>
           )}
-          <button className="primary-btn compact-btn" onClick={submitScores} disabled={isSubmitting}>
-            {isSubmitting ? 'Submitting…' : `Submit Scores (${total})`}
-          </button>
+          {!hasSubmitted && (
+            <button className="primary-btn compact-btn" onClick={submitScores} disabled={isSubmitting}>
+              {isSubmitting ? 'Submitting…' : `Submit Scores (${total})`}
+            </button>
+          )}
         </div>
       </footer>
 
