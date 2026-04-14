@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const categories = [
@@ -36,6 +36,17 @@ export default function App() {
   const [revealedVoteCount, setRevealedVoteCount] = useState(0);
   const [finalRevealStage, setFinalRevealStage] = useState(0);
   const [finalCountryRevealCount, setFinalCountryRevealCount] = useState(0);
+  const revealScrollRef = useRef<HTMLDivElement>(null);
+
+  const focusRevealRow = useCallback((node: HTMLDivElement | null) => {
+    if (!node) return;
+    const scrollContainer = revealScrollRef.current;
+    if (!scrollContainer) return;
+    const containerRect = scrollContainer.getBoundingClientRect();
+    const rowRect = node.getBoundingClientRect();
+    const targetScrollTop = scrollContainer.scrollTop + rowRect.top - containerRect.top - containerRect.height / 2 + rowRect.height / 2;
+    scrollContainer.scrollTo({ top: targetScrollTop, behavior: 'smooth' });
+  }, []);
 
   useEffect(() => {
     fetch(`${API_BASE}/api/session`)
@@ -735,7 +746,7 @@ export default function App() {
         <div className="fullscreen-overlay final-screen">
         <div className="reveal-backdrop final-backdrop" />
 
-        <div className="reveal-scroll">
+        <div className="reveal-scroll" ref={revealScrollRef}>
           <header className="reveal-topbar">
             <div className="brand-mark small">✦ Eurovision Party</div>
             <div className="reveal-progress">Final Results</div>
@@ -752,12 +763,16 @@ export default function App() {
                 return (
                 <div
                   key={country.id}
+                  ref={isCurrentFocus ? focusRevealRow : undefined}
                   className={`final-row ${isRevealed ? 'animate__animated animate__flipInX animate__faster' : ''}${index === 0 ? ' gold-row podium-row podium-gold' : index === 1 ? ' silver-row podium-row podium-silver' : index === 2 ? ' bronze-row podium-row podium-bronze' : ''}${isRevealed ? ' final-row-visible' : ' final-row-hidden'}${isCurrentFocus ? ' podium-focus current-reveal-focus' : ''}${index === 0 && isCurrentFocus ? ' winner-focus' : ''}`}
                 >
                   <div className="final-rank-num">
                     {index === 0 ? '🥇' : index === 1 ? '🥈' : index === 2 ? '🥉' : index + 1}
                   </div>
-                  <div className="final-row-flag">{country.flag}</div>
+                  <div className="final-row-flag-wrap">
+                    <div className="final-row-flag">{country.flag}</div>
+                    <div className="final-row-flag-name">{country.name}</div>
+                  </div>
                   <div className="final-row-info">
                     <strong>{country.name}</strong>
                     <small className="muted">
