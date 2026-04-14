@@ -413,14 +413,7 @@ app.post('/api/session/next-country', async (req, res) => {
     const phase = session?.phase || 'scoring';
 
     if (phase === 'preshow') {
-      if (session?.selected_country_id == null) {
-        return res.status(400).json({ error: 'Choose the first country before starting the show' });
-      }
-      const selectedIndex = countries.findIndex((country) => country.id === session.selected_country_id);
-      if (selectedIndex < 0) {
-        return res.status(400).json({ error: 'Selected country could not be found' });
-      }
-      await run('UPDATE sessions SET current_country_index = ?, phase = ?, selected_country_id = ?, scoring_country_id = ? WHERE id = ?', [selectedIndex, 'scoring-intro', null, session.selected_country_id, session.id]);
+      await run('UPDATE sessions SET phase = ?, selected_country_id = ?, scoring_country_id = ? WHERE id = ?', ['intro', null, null, session.id]);
     } else if (phase === 'scoring') {
       await run('UPDATE sessions SET phase = ?, results_country_index = ?, selected_country_id = ?, scoring_country_id = ? WHERE id = ?', ['results', currentIndex, null, null, session.id]);
     } else if (phase === 'results') {

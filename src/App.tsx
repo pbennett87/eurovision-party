@@ -460,57 +460,22 @@ export default function App() {
               <div className="section-tag fade-up" style={{ animationDelay: '320ms' }}>Awaiting Opening Act</div>
               <h1 className="reveal-title fade-up" style={{ animationDelay: '460ms' }}>The show is about to begin</h1>
               <p className="reveal-meta fade-up" style={{ animationDelay: '620ms' }}>
-                The leader will choose the first country to open the scoring.
+                {users.length} {users.length === 1 ? 'player' : 'players'} in the room. Ready when you are!
               </p>
             </div>
-
-            {user?.is_admin ? (
-              <div className="intro-selection-panel fade-up" style={{ animationDelay: '900ms' }}>
-                <div className="intro-panel-glow" />
-                <div className="intro-panel-content">
-                  <div className="section-tag">Opening act</div>
-                  <h2>Select the first country</h2>
-                  <p>Pick the first performance to launch the night.</p>
-                  <div className="intro-country-grid">
-                    {countries.map((country: any) => {
-                      const isActive = (pendingCountryId ?? selectedCountryId) === country.id;
-                      return (
-                        <button
-                          key={country.id}
-                          className={isActive ? 'intro-country-btn active' : 'intro-country-btn'}
-                          onClick={() => setPendingCountryId(country.id)}
-                        >
-                          <span className="intro-country-flag">{country.flag}</span>
-                          <span className="intro-country-name">{country.name}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-            ) : (
-              <div className="intro-panel fade-up" style={{ animationDelay: '900ms' }}>
-                <div className="intro-panel-glow" />
-                <div className="intro-panel-content">
-                  <div className="section-tag">Stand by</div>
-                  <h2>Waiting for the leader to open the show</h2>
-                  <p>The first country has not been chosen yet.</p>
-                </div>
-              </div>
-            )}
           </div>
 
-          <footer className="reveal-footer fade-up" style={{ animationDelay: '1100ms' }}>
+          <footer className="reveal-footer fade-up" style={{ animationDelay: '800ms' }}>
             {user?.is_admin ? (
               <div className="reveal-actions">
-                <button className="primary-btn compact-btn glow-pulse" onClick={selectNextCountry} disabled={!pendingCountryId || isSelectingCountry}>
-                  {isSelectingCountry ? 'Starting the show…' : 'Confirm & Start the Show →'}
+                <button className="primary-btn compact-btn glow-pulse" onClick={() => moveCountry('next')}>
+                  Start the Show →
                 </button>
               </div>
             ) : (
               <div className="reveal-waiting">
                 <span className="waiting-dot" />
-                <span>Waiting for the leader to choose the first country…</span>
+                <span>Waiting for the leader to start the show…</span>
               </div>
             )}
           </footer>
