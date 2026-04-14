@@ -211,17 +211,21 @@ export default function App() {
 
   const moveCountry = async (direction: 'next' | 'previous') => {
     if (!user?.id) return;
-    const res = await fetch(`${API_BASE}/api/session/${direction}-country`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ userId: user.id })
-    });
-    const data = await res.json();
-    if (!res.ok) {
-      setStatusText(data.error || 'Could not update current country');
-      return;
+    try {
+      const res = await fetch(`${API_BASE}/api/session/${direction}-country`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ userId: user.id })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setStatusText(data.error || 'Could not update current country');
+        return;
+      }
+      setSessionState(data.state);
+    } catch (err: any) {
+      setStatusText(err?.message || 'Network error — could not reach server');
     }
-    setSessionState(data.state);
   };
 
   const selectNextCountry = async () => {
@@ -464,6 +468,8 @@ export default function App() {
               </p>
             </div>
           </div>
+
+          {statusText && <div className="status-banner" style={{ margin: '0 20px' }}>{statusText}</div>}
 
           <footer className="reveal-footer fade-up" style={{ animationDelay: '800ms' }}>
             {user?.is_admin ? (
