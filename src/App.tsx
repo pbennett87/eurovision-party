@@ -23,7 +23,7 @@ export default function App() {
   const [user, setUser] = useState<any>(null);
   const [sessionState, setSessionState] = useState<any>(null);
   const [isBootstrapping, setIsBootstrapping] = useState(true);
-  const [scores, setScores] = useState<Record<string, number>>(() => Object.fromEntries(categories.map((c) => [c, 3])));
+  const [scores, setScores] = useState<Record<string, number>>(() => Object.fromEntries(categories.map((c) => [c, 5])));
   const [favourite, setFavourite] = useState('');
   const [showLeaderboard, setShowLeaderboard] = useState(false);
   const [showAdmin, setShowAdmin] = useState(false);
@@ -104,7 +104,7 @@ export default function App() {
   // Reset scores when moving to a new country
   useEffect(() => {
     if (sessionState?.session?.phase === 'scoring') {
-      setScores(Object.fromEntries(categories.map((c) => [c, 3])));
+      setScores(Object.fromEntries(categories.map((c) => [c, 5])));
       setStatusText('');
       setHasSubmitted(false);
       prevAllSubmittedRef.current = false;
@@ -543,7 +543,7 @@ export default function App() {
                     <div key={cat} className="category-leader-chip">
                       <span className="leader-cat">{cat}</span>
                       <span className="leader-name">{info.name}</span>
-                      <span className="leader-score">{info.value}/5</span>
+                      <span className="leader-score">{info.value}/10</span>
                     </div>
                   ))}
                 </div>
@@ -578,7 +578,7 @@ export default function App() {
                         {Object.entries(vote.breakdown).map(([cat, val]) => (
                           <div key={cat} className="breakdown-cell">
                             <span className="breakdown-label">{cat}</span>
-                            <span className="breakdown-value">{val as number}/5</span>
+                            <span className="breakdown-value">{val as number}/10</span>
                           </div>
                         ))}
                       </div>
@@ -994,10 +994,10 @@ export default function App() {
                 <div key={category} className="score-card-row score-row-enter" style={{ animationDelay: `${280 + catIndex * 70}ms` }}>
                   <div className="score-card-header">
                     <label>{category}</label>
-                    <span className="score-value">{scores[category]}/5</span>
+                    <span className="score-value">{scores[category]}/10</span>
                   </div>
-                  <div className="score-buttons five-up">
-                    {[1, 2, 3, 4, 5].map((value) => (
+                  <div className="score-buttons ten-up">
+                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
                       <button
                         key={value}
                         className={scores[category] === value ? 'score-btn active' : 'score-btn'}
