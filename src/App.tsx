@@ -111,6 +111,14 @@ export default function App() {
     }
   }, [sessionState?.session?.current_country_index]);
 
+  // Clear submitted state when leaving the scoring phase
+  useEffect(() => {
+    if (sessionState?.session?.phase !== 'scoring') {
+      setHasSubmitted(false);
+      prevAllSubmittedRef.current = false;
+    }
+  }, [sessionState?.session?.phase]);
+
   const total = useMemo(() => Object.values(scores).reduce((a, b) => a + b, 0), [scores]);
 
   useEffect(() => {
