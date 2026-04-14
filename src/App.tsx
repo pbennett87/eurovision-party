@@ -523,6 +523,34 @@ export default function App() {
             </div>
           </div>
 
+          {(() => {
+            const submittedVotes = resultsView.votes.filter((v: any) => v.submitted && v.breakdown);
+            if (submittedVotes.length === 0) return null;
+            const catHighest: Record<string, { name: string; value: number }> = {};
+            for (const vote of submittedVotes) {
+              for (const [cat, val] of Object.entries(vote.breakdown)) {
+                const v = val as number;
+                if (!catHighest[cat] || v > catHighest[cat].value) {
+                  catHighest[cat] = { name: vote.first_name, value: v };
+                }
+              }
+            }
+            return (
+              <div className="reveal-category-leaders fade-up" style={{ animationDelay: '650ms' }}>
+                <h2 className="reveal-section-title" style={{ marginBottom: '0.5rem' }}>Highest Scorers by Category</h2>
+                <div className="category-leader-grid">
+                  {Object.entries(catHighest).map(([cat, info]) => (
+                    <div key={cat} className="category-leader-chip">
+                      <span className="leader-cat">{cat}</span>
+                      <span className="leader-name">{info.name}</span>
+                      <span className="leader-score">{info.value}/5</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            );
+          })()}
+
           <div className="reveal-votes-section">
             <h2 className="reveal-section-title fade-up" style={{ animationDelay: '750ms' }}>How Everyone Voted</h2>
             <div className="vote-cards">

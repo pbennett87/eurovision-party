@@ -787,6 +787,43 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
 }
 .stat-orb.main-stat strong { color: var(--cyan); }
 
+/* ────────── CATEGORY LEADERS (Results Reveal) ────────── */
+.reveal-category-leaders {
+  max-width: 720px;
+  margin: 0 auto 1.5rem;
+}
+.category-leader-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 8px;
+}
+.category-leader-chip {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+}
+.leader-cat {
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--muted);
+}
+.leader-name {
+  font-size: 0.95rem;
+  font-weight: 800;
+  color: var(--cyan);
+}
+.leader-score {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
 /* ────────── VOTE CARDS (Results Reveal) ────────── */
 .reveal-votes-section {
   max-width: 720px;

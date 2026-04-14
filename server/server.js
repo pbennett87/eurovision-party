@@ -318,8 +318,9 @@ app.get('/api/session', async (_req, res) => {
 
 app.post('/api/join', async (req, res) => {
   try {
-    const firstName = String(req.body.firstName || '').trim();
-    if (!firstName) return res.status(400).json({ error: 'First name is required' });
+    const rawName = String(req.body.firstName || '').trim();
+    if (!rawName) return res.status(400).json({ error: 'First name is required' });
+    const firstName = rawName.charAt(0).toUpperCase() + rawName.slice(1).toLowerCase();
 
     const existingUsers = await all('SELECT * FROM users ORDER BY created_at ASC');
     const normalized = firstName.toLowerCase();
