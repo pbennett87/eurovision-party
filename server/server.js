@@ -64,9 +64,10 @@ const CATEGORIES = [
 
 const app = express();
 const server = http.createServer(app);
-const io = new Server(server, { cors: { origin: '*' } });
+const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*';
+const io = new Server(server, { cors: { origin: allowedOrigins } });
 
-app.use(cors());
+app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
 
 const run = (sql, params = []) => new Promise((resolve, reject) => {
@@ -556,7 +557,7 @@ io.on('connection', async (socket) => {
   socket.emit('session:update', await getSessionState());
 });
 
-const PORT = 3030;
+const PORT = process.env.PORT || 3030;
 server.listen(PORT, '0.0.0.0', () => {
   console.log(`Eurovision Party server running on http://0.0.0.0:${PORT}`);
 });
