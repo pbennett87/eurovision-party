@@ -8,12 +8,12 @@ const categories = [
   'Special Effects',
   'Originality',
   'Stage Presence',
-  'Overall Score',
   'Catchiness',
   'Camp Factor',
   'Prop Utility',
   'Camerawork',
-  'Bop-ability'
+  'Bop-ability',
+  'Overall Score'
 ];
 
 const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;

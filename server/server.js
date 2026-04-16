@@ -58,12 +58,12 @@ const CATEGORIES = [
   'Special Effects',
   'Originality',
   'Stage Presence',
-  'Overall Score',
   'Catchiness',
   'Camp Factor',
   'Prop Utility',
   'Camerawork',
-  'Bop-ability'
+  'Bop-ability',
+  'Overall Score'
 ];
 
 const app = express();
