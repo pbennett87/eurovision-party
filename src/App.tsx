@@ -105,15 +105,15 @@ export default function App() {
     };
   }, []);
 
-  // Reset scores when moving to a new country
+  // Reset scores when moving to a new country so each scorecard starts fresh at 5
   useEffect(() => {
-    if (sessionState?.session?.phase === 'scoring') {
+    if (sessionState?.session?.phase === 'scoring' || sessionState?.session?.phase === 'scoring-intro') {
       setScores(Object.fromEntries(categories.map((c) => [c, 5])));
       setStatusText('');
       setHasSubmitted(false);
       prevAllSubmittedRef.current = false;
     }
-  }, [sessionState?.session?.current_country_index]);
+  }, [sessionState?.session?.current_country_index, sessionState?.session?.scoring_country_id, sessionState?.currentCountry?.id, sessionState?.session?.phase]);
 
   // Clear submitted state when leaving the scoring phase
   useEffect(() => {
