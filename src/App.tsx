@@ -609,7 +609,7 @@ export default function App() {
                 ← Back to Scoring
               </button>
               <button className="primary-btn compact-btn glow-pulse" onClick={() => moveCountry('next')}>
-                {resultsView?.country?.id === countries[countries.length - 1]?.id ? '🏆 Show Final Results' : 'Next Country →'}
+                Next Country →
               </button>
             </div>
           ) : (
@@ -1109,7 +1109,7 @@ export default function App() {
             <div className="admin-actions-grid two-up">
               <button className="secondary-btn" onClick={() => moveCountry('previous')}>← Previous</button>
               <button className="secondary-btn" onClick={() => moveCountry('next')}>Show Results →</button>
-              <button className="secondary-btn" onClick={simulateFinale}>Simulate Finale ✨</button>
+              <button className="secondary-btn" onClick={simulateFinale}>Trigger Finale ✨</button>
               <button className="secondary-btn danger-btn" onClick={resetApp}>Reset Session</button>
             </div>
             <div className="current-country-banner">
