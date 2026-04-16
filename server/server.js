@@ -64,11 +64,17 @@ const CATEGORIES = [
 
 const app = express();
 const server = http.createServer(app);
+const isProduction = process.env.NODE_ENV === 'production';
+const clientDistPath = path.resolve(__dirname, '..', 'dist');
 const allowedOrigins = process.env.CORS_ORIGIN ? process.env.CORS_ORIGIN.split(',') : '*';
 const io = new Server(server, { cors: { origin: allowedOrigins } });
 
 app.use(cors({ origin: allowedOrigins }));
 app.use(express.json());
+
+if (isProduction) {
+  app.use(express.static(clientDistPath));
+}
 
 const run = (sql, params = []) => new Promise((resolve, reject) => {
   db.run(sql, params, function (err) {
@@ -550,6 +556,12 @@ io.on('connection', async (socket) => {
   socket.emit('connected', { ok: true });
   socket.emit('session:update', await getSessionState());
 });
+
+if (isProduction) {
+  app.get('*', (_req, res) => {
+    res.sendFile(path.join(clientDistPath, 'index.html'));
+  });
+}
 
 const PORT = process.env.PORT || 3030;
 server.listen(PORT, '0.0.0.0', () => {
