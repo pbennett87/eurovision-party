@@ -429,6 +429,9 @@ export default function App() {
           <div className="brand-mark">✦ Eurovision Party</div>
           <h1>Join the scoring room</h1>
           <p className="muted">Enter your first name and jump straight into the live vote.</p>
+          <p className="muted" style={{ marginTop: '1rem', fontSize: '0.95rem', lineHeight: 1.5 }}>
+            Created by Peter Bennett as a free-to-use companion for Eurovision watch parties — built to make the night more fun, interactive, and a little more dramatic.
+          </p>
           <input
             value={name}
             onChange={(e) => setName(e.target.value)}
