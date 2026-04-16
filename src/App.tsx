@@ -609,7 +609,7 @@ export default function App() {
                 ← Back to Scoring
               </button>
               <button className="primary-btn compact-btn glow-pulse" onClick={() => moveCountry('next')}>
-                {currentIndex >= countries.length - 1 ? '🏆 Show Final Results' : 'Next Country →'}
+                {resultsView?.country?.id === countries[countries.length - 1]?.id ? '🏆 Show Final Results' : 'Next Country →'}
               </button>
             </div>
           ) : (
