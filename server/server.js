@@ -426,12 +426,7 @@ app.post('/api/session/next-country', async (req, res) => {
     } else if (phase === 'scoring') {
       await run('UPDATE sessions SET phase = ?, results_country_index = ?, selected_country_id = ?, scoring_country_id = ? WHERE id = ?', ['results', currentIndex, null, null, session.id]);
     } else if (phase === 'results') {
-      const remainingCountries = countries.filter((country) => country.performance_order > currentIndex);
-      if (!remainingCountries.length) {
-        return res.status(400).json({ error: 'Use the finale control to show the final results' });
-      } else {
-        await run('UPDATE sessions SET phase = ?, results_country_index = ?, selected_country_id = ?, scoring_country_id = ? WHERE id = ?', ['intro', null, null, null, session.id]);
-      }
+      await run('UPDATE sessions SET phase = ?, results_country_index = ?, selected_country_id = ?, scoring_country_id = ? WHERE id = ?', ['intro', null, null, null, session.id]);
     } else if (phase === 'intro') {
       if (session?.selected_country_id == null) {
         return res.status(400).json({ error: 'Choose the next country before starting scoring' });
