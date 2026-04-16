@@ -12,7 +12,7 @@ const categories = [
   'Overall Impact'
 ];
 
-const API_BASE = import.meta.env.VITE_API_URL || `http://${window.location.hostname || 'localhost'}:3030`;
+const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
 const socket = io(API_BASE, { autoConnect: true });
 
 export default function App() {
