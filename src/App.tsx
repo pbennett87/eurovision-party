@@ -2,6 +2,13 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const categories = [
+  'Vocals',
+  'Costume',
+  'Choreography',
+  'Special Effects',
+  'Originality',
+  'Stage Presence',
+  'Overall Score',
   'Catchiness',
   'Camp Factor',
   'Prop Utility',
