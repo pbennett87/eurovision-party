@@ -2,14 +2,11 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { io } from 'socket.io-client';
 
 const categories = [
-  'Vocals',
-  'Costume',
-  'Choreography',
-  'Special Effects',
-  'Originality',
-  'Stage Presence',
-  'Crowd Appeal',
-  'Overall Impact'
+  'Catchiness',
+  'Camp Factor',
+  'Prop Utility',
+  'Camerawork',
+  'Bop-ability'
 ];
 
 const API_BASE = import.meta.env.VITE_API_URL || window.location.origin;
@@ -996,8 +993,8 @@ export default function App() {
                     <label>{category}</label>
                     <span className="score-value">{scores[category]}/10</span>
                   </div>
-                  <div className="score-buttons ten-up">
-                    {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
+                  <div className="score-buttons eleven-up single-line-scores">
+                    {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((value) => (
                       <button
                         key={value}
                         className={scores[category] === value ? 'score-btn active' : 'score-btn'}

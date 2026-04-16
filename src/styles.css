@@ -529,6 +529,9 @@ button:disabled { opacity: 0.5; cursor: not-allowed; }
   gap: 6px;
 }
 .five-up { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
+.six-up { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 6px; }
+.eleven-up { display: grid; grid-template-columns: repeat(11, minmax(0, 1fr)); gap: 6px; }
+.single-line-scores { width: 100%; }
 .ten-up { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 6px; }
 
 .score-btn,
